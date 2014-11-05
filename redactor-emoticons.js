@@ -75,6 +75,7 @@ RedactorPlugins.emoticons = function() {
                     redactor.modal.close();
 
                     redactor.selection.restore();
+                    redactor.buffer.set();
                     redactor.insert.html('<img src="' + $(this).attr('src') + '" alt="' + $(this).attr('alt') + '">');
                     redactor.code.sync();
                 });
@@ -106,16 +107,17 @@ RedactorPlugins.emoticons = function() {
                 html = html.replace(pattern, '<img src="' + redactor.opts.emoticons.items[i].src + '" alt="' + redactor.opts.emoticons.items[i].name + '">');
             }
 
-            redactor.image.insert(html);
+            if (numberOfMatches > 0)
+                redactor.insert.html(html);
 
             return numberOfMatches;
-            return 0;
         },
         chooseSmile: function(buttonName, buttonDOM, buttonObj) {
             var imgObj = buttonDOM.find('img');
-            this.bufferSet();
-            this.image.insert('<img class="smile" src="' + imgObj.attr('src') + '" alt="' + imgObj.attr('alt') + '">');
-            this.modalClose();
+            redactor.selection.restore();
+            redactor.buffer.set();
+            redactor.image.insert('<img class="smile" src="' + imgObj.attr('src') + '" alt="' + imgObj.attr('alt') + '">');
+            redactor.modal.close();
         }
     }
 };
